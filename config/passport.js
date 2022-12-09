@@ -43,3 +43,7 @@ module.exports = function (passport) {
     User.findById(id, (err, user) => done(err, user))
   })
 }
+
+
+
+// This code is requied for login with google . It is called OAUth

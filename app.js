@@ -1,13 +1,13 @@
-const express = require('express')
+const express = require('express')  
 const mongoose = require('mongoose') // mongoose is used to handle mongodb 
 const dotenv = require('dotenv')  // to secure values it is used
 const connectDB = require('./config/db')   // in order to connect with database
 const morgan = require('morgan') // it is middleware used to modify request
 const exphbs = require('express-handlebars') //it render html pages to client side from server and makes work eas
 const passport = require('passport')   // used for user OAuth
-const path = require('path')
+const path = require('path')   // To use path module
 const app = express()  // iniatilaztion of express framework
-const session = require('express-session')
+const session = require('express-session')  // for storing the user information
 const MongoStore = require('connect-mongo')
 const methodOverride = require('method-override')
 
@@ -17,8 +17,7 @@ const methodOverride = require('method-override')
 dotenv.config({ path: './config/config.env' }) //initialization of dot env
 
 
-// Passport config
-require('./config/passport')(passport)  
+
 
 connectDB() // //to connect with mongoDB database created in  ./config/db
 
@@ -69,31 +68,45 @@ app.use(
 
 // Handlebars
 app.engine(          // we used here handlebar template engine to render web pages in client side
-             // that means every html page will have .hbs extension
-   '.hbs', exphbs.engine({                                        
+  '.hbs',            // that means every html page will have .hbs extension
+  exphbs.engine({               
+    helpers: {
+      formatDate, 
+      stripTags,
+      truncate,
+      editIcon,
+      select,
+    },                       
     defaultLayout: 'main',  // it is default layout
     extname: '.hbs',
-  })  
-
+  })
 )
+
 app.set('view engine', '.hbs') // it is also part of handle bar... it need to create every page in view folder
 
 
-// Sessions
+// Sessions : This the initialization of session
 app.use(
   session({
-    secret: 'keyboard cat',
+    secret: 'keyboard cat',  // it means data are encrypted
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false,      
     store:MongoStore.create({mongoUrl: process.env.MONGO_URI,}),
   })
 )
 
 
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')))  //in order to access static file
 
-// Passport middleware
+
+// Passport config: Linking with passport js
+require('./config/passport')(passport)  
+
+
+// Passport middleware 
 app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.session())   
 
 
 // Set global var
@@ -106,8 +119,8 @@ app.use(function (req, res, next) {
 const PORT = process.env.PORT || 3000 // the server will run in the given por of env file or in 3000
 
 
-// Routes
-app.use('/', require('./routes/index'))   
+// Routes : with this code we are linking our app.js with route files
+app.use('/', require('./routes/index'))    
 app.use('/auth', require('./routes/auth'))
 app.use('/stories', require('./routes/stories'))
 

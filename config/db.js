@@ -1,3 +1,6 @@
+
+// It was made for connecting with database
+
 const mongoose = require('mongoose')   //it is needed to handle mongoDB database
 const connectDB = async () => {    //IN order to connect with database asynchronously
   try {
@@ -6,9 +9,9 @@ const connectDB = async () => {    //IN order to connect with database asynchron
         useUnifiedTopology: true // <-- no longer necessary
     })
 
-    console.log(`MongoDB Connected`)
-  } catch (err) {
-    console.error(err)
+    console.log(`MongoDB Connected`)  //msg for successful connection
+  } catch (err) {                   //if there any error
+    console.error(err) 
     process.exit(1)
   }
 }

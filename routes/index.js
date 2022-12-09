@@ -6,9 +6,9 @@ const Story = require('../models/Story')
 
 // @desc    Login/Landing page
 // @route   GET /
-router.get('/', ensureGuest, (req, res) => {
-  res.render('login', {
-    layout: 'login',
+router.get('/', ensureGuest, (req, res) => {   //It means when anyone hit on / it will take him to login page
+  res.render('login', {       // It means login file in views folder       
+    layout: 'login',          // It will use the login layout of layout folder
   })
 })
 

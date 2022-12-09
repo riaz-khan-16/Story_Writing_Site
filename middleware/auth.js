@@ -14,3 +14,5 @@ module.exports = {
       }
     },
   }
+
+  // middle ware is put in the route
